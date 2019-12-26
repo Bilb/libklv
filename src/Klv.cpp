@@ -3,6 +3,16 @@
 #include <algorithm>
 #include <string>
 
+#include <sstream>
+
+template <typename T>
+std::string to_string(T value)
+{
+    std::ostringstream os ;
+    os << value ;
+    return os.str() ;
+}
+
 /**
  * @brief Convinience constructor to create a KLV object with a specified universal key
  *        and data buffer. This will also encode the length (BER).
@@ -71,7 +81,7 @@ KLV::KLV(const std::vector<uint8_t> key, const std::vector<uint8_t> len, const s
         this->ber_len = len[0] & 0b01111111;
 
         if(ber_len != len.size() - 1) {
-            throw std::invalid_argument("len argument encoded length " + std::to_string(ber_len) + " did not match actual length " + std::to_string(len.size() - 1));
+            throw std::invalid_argument("len argument encoded length " + to_string(ber_len) + " did not match actual length " + to_string(len.size() - 1));
         }
 
         // iterate through the len vector for that many bytes
